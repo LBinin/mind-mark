@@ -1,0 +1,16 @@
+.mind-map-toolbar {
+  flex-wrap: wrap;
+  :global(.ant-checkbox) {
+    & + span {
+      padding-right: 0;
+    }
+  }
+
+  :global(.ant-space-item) {
+    margin-left: auto;
+  }
+}
+
+.tool-bar-last-modified-time {
+  color: #ccc;
+}

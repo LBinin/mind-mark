@@ -1,0 +1,34 @@
+.mind-note-app-container {
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  padding: var(--spacing-between);
+
+  .mind-map-card {
+    margin: 0 0 0 var(--spacing-between) !important;
+  }
+
+  &.layout-reverse {
+    flex-direction: row-reverse;
+
+    .mind-map-card {
+      margin: 0 var(--spacing-between) 0 0 !important;
+    }
+  }
+
+  &.layout-editor-top {
+    flex-direction: column;
+
+    .mind-map-card {
+      margin: var(--spacing-between) 0 0 0 !important;
+    }
+  }
+
+  &.layout-editor-bottom {
+    flex-direction: column-reverse;
+
+    .mind-map-card {
+      margin: 0 0 var(--spacing-between) 0 !important;
+    }
+  }
+}

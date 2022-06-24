@@ -1,0 +1,11 @@
+.markdown-editor {
+  :global(.toastui-editor-defaultUI) {
+    border-color: #f0f0f0 !important;
+    border-radius: 2px;
+    background: #fff;
+
+    :global(.te-toolbar-section) {
+      border-color: #f0f0f0 !important;
+    }
+  }
+}

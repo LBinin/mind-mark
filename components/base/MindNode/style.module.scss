@@ -1,0 +1,285 @@
+$border-width: 3px; // Link line 宽度，建议为偶数
+// $border-color: #e05250;
+
+$node-border-radius: 10px;
+$node-spacing-width: 20px;            // Node 水平间隔
+$node-spacing-height: 10px;           // Node 竖直间隔
+$node-children-spacing-height: 15px;  // 不同 Node，其子孙元素和其他 Node 的子孙元素之间的距离
+$node-collapse-size: 20px;
+
+$link-line-cap-radius: 8px;   // Link Line 连接处弯曲半径
+
+// color
+$color-code-bg: rgba(27, 31, 35, 0.05);
+$color-code-font: #e05250;
+$color-strong-font: #e05250;
+
+// 基础样式
+.mind-node {
+  --color-node-primary: #e05250;
+  --color-node-bg: #fff;
+  --color-node-border: var(--color-node-primary);
+  --color-node-font: var(--color-node-primary);
+  --color-node-text: #303133;
+  --color-node-sub-text: #909399;
+  --color-node-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: fit-content;
+
+  &-body {
+    border: $border-width solid var(--color-node-border);
+    border-radius: $node-border-radius;
+    margin: $node-spacing-height $node-spacing-width;
+    padding: 0.6em 1em;
+    background: var(--color-node-bg);
+    position: relative;
+    // box-shadow: var(--color-node-shadow);
+
+    &-title {
+      font-size: 1.1em;
+      color: var(--color-node-text);
+      white-space: pre;
+      line-height: 2em;
+      font-weight: bold;
+    }
+
+    &-callout {
+      font-size: 0.9em;
+      color: var(--color-node-sub-text);
+      border-left: 4px solid #C0C4CC;
+      padding-left: 0.8em;
+      margin: 0.5em 0 0.3em;
+
+      &-item {
+        white-space: pre;
+        line-height: 1.8em;
+
+        & > p {
+          margin: 0;
+        }
+      }
+    }
+
+    &-collapse-btn {
+      position: absolute;
+      right: -$border-width / 2;
+      top: 50%;
+      transform: translate(50%, -50%);
+      appearance: none;
+      border: 2px solid var(--color-node-border);
+      border-radius: 50%;
+      height: $node-collapse-size;
+      width: $node-collapse-size;
+      line-height: $node-collapse-size * 7 / 8;
+      z-index: 2;
+      vertical-align: middle;
+      padding: 0;
+      background: #fff;
+      color: var(--color-node-border);
+      box-shadow: -1px 2px 6px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: opacity 0.25s;
+      opacity: 0;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &:hover & {
+      &-collapse-btn {
+        opacity: 1;
+      }
+    }
+  }
+
+  &-children {
+    position: relative;
+    margin: $node-children-spacing-height 0;
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      height: $border-width;
+      width: $node-spacing-width;
+      background: var(--color-node-border);
+      top: 50%;
+      transform: translateY(-$border-width / 2);
+      left: -$node-spacing-width;
+    }
+  }
+
+  /* Link Line */
+
+  // Children 连接父节点 Link
+  &:not(.first-child):not(.last-child):not(.root-node) {
+    &::before {
+      content: "";
+      display: block;
+      width: $border-width;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      background: var(--color-node-border);
+      // transform: translateX(-50%);
+    }
+  }
+
+  // 囊括子节点 Link
+  &:not(.root-node)::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    //left: -$node-spacing-width - $border-width;
+    width: $node-spacing-width;
+    height: $border-width;
+    background: var(--color-node-border);
+    //right: -$node-spacing-width - $border-width;
+    //border: $border-width / 2 solid var(--color-node-border);
+    transform: translateY(-50%);
+    top: 50%;
+    //width: $node-spacing-width;
+  }
+
+  &.first-child {
+    &::after {
+      height: unset;
+      background: unset;
+      top: 50%;
+      bottom: 0 - $border-width;
+      //bottom: -$node-spacing-height - $border-width * 2;
+      //transform: translate(-$border-width / 2);
+      transform: translate(0, $border-width / 2);
+      border: $border-width solid var(--color-node-border);
+      border-bottom: 0 transparent;
+      border-right: 0 transparent;
+      border-top-left-radius: $link-line-cap-radius;
+    }
+  }
+
+  &.last-child {
+    &::after {
+      height: unset;
+      background: unset;
+      bottom: 50%;
+      //top: -$node-spacing-height - $border-width * 2;
+      top: 0 - $border-width;
+      transform: translate(0, $border-width / 2);
+      border: $border-width solid var(--color-node-border);
+      border-top: 0 transparent;
+      border-right: 0 transparent;
+      border-bottom-left-radius: $link-line-cap-radius;
+    }
+  }
+
+  &.single-child {
+    & > .mind-node-children > .mind-node {
+      &::before {
+        content: unset;
+      }
+    }
+  }
+}
+
+// 定制样式
+.mind-node {
+  // 彩色主题
+  &.rainbow {
+    & > .mind-node-children {
+      & > .mind-node:nth-of-type(1) {
+        &, .mind-node {
+          --color-node-primary: #e05250;
+        }
+      }
+      & > .mind-node:nth-of-type(2) {
+        &, .mind-node {
+          --color-node-primary: #F8932E;
+        }
+      }
+      & > .mind-node:nth-of-type(3) {
+        &, .mind-node {
+          --color-node-primary: #FEC938;
+        }
+      }
+    }
+  }
+
+  // 折叠状态
+  &.collapsed {
+    & > .mind-node-children {
+      display: none;
+    }
+
+    & > .mind-node-body {
+      & > .mind-node-body-collapse-btn {
+        opacity: 1;
+      }
+    }
+  }
+
+  // 根节点
+  &.root-node {
+    margin: 0 auto;
+    & > .mind-node-body {
+      --color-node-bg: #e05250;
+      --color-node-text: #fff;
+      --color-node-shadow: 0 5px 12px rgba(242, 82, 80, 0.4);
+
+      & > .mind-node-body-title {
+        font-weight: normal;
+      }
+
+      & > .mind-node-body-callout {
+        color: rgba(255,255,255, 0.85);
+        border-color: rgba(255,255,255, 0.5);
+      }
+
+      // 文本样式
+      code {
+        background-color: rgba(255,255,255, 0.9);
+      }
+    }
+  }
+}
+
+// Markdown 格式相关
+.mind-node {
+  code {
+    background: $color-code-bg;
+    padding: 0.2em 0.5em;
+    border-radius: 4px;
+    color: var(--color-node-font);
+    //color: $color-code-font;
+    vertical-align: middle;
+    font-family: "Fira Code";
+    font-size: 0.8em;
+  }
+
+  b {
+    color: var(--color-node-font);
+    //color: $color-strong-font;
+  }
+
+  ul {
+    padding-left: 1.3em;
+    margin-bottom: 0;
+  }
+
+  ol {
+    padding-left: 1.8em;
+  }
+
+  li {
+    &::marker {
+      font-weight: bold;
+    }
+    p {
+      margin-bottom: 0;
+    }
+  }
+}
